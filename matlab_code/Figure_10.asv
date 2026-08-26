@@ -8,6 +8,9 @@ clc
 clear
 close all
 
+addpath('/Users/lizkal/Library/CloudStorage/SynologyDrive-Personal/SData_ReachGrasp/code')
+
+
 selpath = 0;
 fs_Vicon = 100;
 fs_Sessantaquattro = 2000;
@@ -29,7 +32,8 @@ while selpath == 0
 end
 
 % define the path of storaged data
-subjects = {'sub-01','sub-02','sub-03','sub-04','sub-05', 'sub-06', 'sub-07','sub-08', 'sub-09','sub-10'};
+% subjects = {'sub-01','sub-02','sub-03','sub-04','sub-05', 'sub-06', 'sub-07','sub-08', 'sub-09','sub-10'};
+subjects = {'sub-01', 'sub-02', 'sub-03', 'sub-04'};
 tasks = {'HO','HC','WP','WS','WF','WE','Cyl','Sph','Trid','Thumb','FroRea','ReaCyl','ReaSph','Pour','Screw','EatFruit'};
 data_events = Events_ReachGrasp.subjects; % load time events
 
@@ -37,9 +41,9 @@ data_events = Events_ReachGrasp.subjects; % load time events
 for ss = 4    % select the subjects
     for tt = 1  % select the task
         % load vicon data
-        file_name_vicon = strcat(selpath,{'\'}, subjects(ss), {'\'}, {'motion'},{'\'}, subjects(ss), '_task-', tasks(tt), '_acq-vicon_motion', {'.csv'});
+        file_name_vicon = strcat(selpath,{'/'}, subjects(ss), {'/'}, {'motion'},{'/'}, subjects(ss), '_task-', tasks(tt), '_acq-vicon_motion', {'.csv'});
         raw_vicon = table2array(readtable(file_name_vicon{:}));
-        file_name_vicon_header = strcat(selpath,{'\'}, subjects(ss), {'\'}, {'motion'},{'\'}, subjects(ss), '_task-', tasks(tt), '_acq-vicon_channels', {'.tsv'});
+        file_name_vicon_header = strcat(selpath,{'/'}, subjects(ss), {'/'}, {'motion'},{'/'}, subjects(ss), '_task-', tasks(tt), '_acq-vicon_channels', {'.tsv'});
         header_vicon = tdfread(file_name_vicon_header{:});
         labels_vicon = cellstr(header_vicon.name);
         label_vicon_to_plot = find(contains(labels_vicon,'ThirdJ1Proj_Y'));
@@ -47,18 +51,18 @@ for ss = 4    % select the subjects
         % bc th 1st column in raw_vicon is time
 
         % load cyberglove data
-        file_name_cyberglove = strcat(selpath,{'\'}, subjects(ss), {'\'}, {'motion'},{'\'}, subjects(ss), '_task-', tasks(tt), '_acq-cyberglove_motion', {'.csv'});
+        file_name_cyberglove = strcat(selpath,{'/'}, subjects(ss), {'/'}, {'motion'},{'/'}, subjects(ss), '_task-', tasks(tt), '_acq-cyberglove_motion', {'.csv'});
         raw_cyberglove = table2array(readtable(file_name_cyberglove{:}));
-        file_name_cyberglove_header = strcat(selpath,{'\'}, subjects(ss), {'\'}, {'motion'},{'\'}, subjects(ss), '_task-', tasks(tt), '_acq-cyberglove_channels', {'.tsv'});
+        file_name_cyberglove_header = strcat(selpath,{'/'}, subjects(ss), {'/'}, {'motion'},{'/'}, subjects(ss), '_task-', tasks(tt), '_acq-cyberglove_channels', {'.tsv'});
         header_cyberglove = tdfread(file_name_cyberglove_header{:});
         labels_cyberglove = cellstr(header_cyberglove.name);
         label_cyberglove_to_plot = find(contains(labels_cyberglove,'MiddleMPJ'));
         joint_cyberglove = raw_cyberglove(:,label_cyberglove_to_plot+1); % add +1 to the label 
       
         % load emg data
-        file_name_hd = strcat(selpath,{'\'}, subjects(ss), {'\'}, {'emg'},{'\'}, subjects(ss), '_task-', tasks(tt), '_acq-sessantaquattro_emg', {'.csv'});
-        file_name_ld = strcat(selpath,{'\'}, subjects(ss), {'\'}, {'emg'},{'\'}, subjects(ss), '_task-', tasks(tt), '_acq-cometa_emg', {'.csv'});
-        file_name_ld_header = strcat(selpath,{'\'}, subjects(ss), {'\'}, {'emg'},{'\'}, subjects(ss), '_task-', tasks(tt), '_acq-cometa_channels', {'.tsv'});
+        file_name_hd = strcat(selpath,{'/'}, subjects(ss), {'/'}, {'emg'},{'/'}, subjects(ss), '_task-', tasks(tt), '_acq-sessantaquattro_emg', {'.csv'});
+        file_name_ld = strcat(selpath,{'/'}, subjects(ss), {'/'}, {'emg'},{'/'}, subjects(ss), '_task-', tasks(tt), '_acq-cometa_emg', {'.csv'});
+        file_name_ld_header = strcat(selpath,{'/'}, subjects(ss), {'/'}, {'emg'},{'/'}, subjects(ss), '_task-', tasks(tt), '_acq-cometa_channels', {'.tsv'});
         header_ld = tdfread(file_name_ld_header{:});
         labels_ld = cellstr(header_ld.name);
         labels_ld_to_plot = find(contains(labels_ld,'Brachiorad'));
@@ -68,7 +72,7 @@ for ss = 4    % select the subjects
         data_ld = raw_ld_emg(:,labels_ld_to_plot+1);  % add +1 to the label 
         % bc th 1st column in raw_vicon is time   
         % load time events
-        trigger = data_events(ss).tasks(tt).time2cut;   
+        oooooooohho = data_events(ss).tasks(tt).time2cut;   
         % plot in seconds by deviding samples to fs
         %%
         figure('units','centimeters','position',[8 8 14.5 7.8]);  

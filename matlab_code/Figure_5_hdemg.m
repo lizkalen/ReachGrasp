@@ -15,6 +15,7 @@ unit_factor = 1e-3; % factor used to convert mV in V
 window = hamming(fs);
 noverlap = 500;
 nfft = 4001;
+% butterworth cutoff at 10 and 500
 [b,a]=butter(4,[10 500]/(fs/2)); % Definition of the Butterworth filter 4th order
 
 %Notch Filter initialization
@@ -27,7 +28,7 @@ Hd = design(h,'butter','SOSScaleNorm', 'Linf');
 % Define your path
 
 while selpath == 0
-    selpath = uigetdir(path,'Select the path of the rawdata folder');
+    selpath = uigetdir('/Users/lizkal/Library/CloudStorage/SynologyDrive-Personal/SData_ReachGrasp','Select the path of the rawdata folder');
     if selpath == 0
         msg = sprintf('[ERROR]: Please select the Reach&Grasp path.');
         h = msgbox(msg);
@@ -37,7 +38,8 @@ while selpath == 0
     end
 end
 
-subj = {'sub-01','sub-02','sub-03','sub-04','sub-05','sub-06','sub-07','sub-08','sub-09','sub-10'};
+%subj = {'sub-01','sub-02','sub-03','sub-04','sub-05','sub-06','sub-07','sub-08','sub-09','sub-10'};
+subj = {'sub-01', 'sub-02', 'sub-03', 'sub-04'};
 data_type = {'emg','motion','tactile'};
 devices = {'sessantaquattro','cometa','vicon','cyberglove','tactileglove'};
 tasks = {'HO','HC','WP','WS','WF','WE','Cyl','Sph','Trid','Thumb','FroRea','ReaCyl','ReaSph','Screw','Pour','EatFruit'};
@@ -56,13 +58,13 @@ for s = 1:length(subj)
         subdirs = {sel_dir.name};
         if ~ismember(subj,subdirs)
             msg = sprintf('[ERROR]: The selected folder does not contain sub-XX subfolders.');
-            h = msgbox(msg)
+            h = msgbox(msg);
             waitfor(msgbox(msg));
             delete(h);
             return
         end
 
-        file_name_hd = strcat(selpath,'\',sel_subj,'\',data_type(1),'\',sel_subj, '_task-',sel_task,'_acq-',devices{1},'_emg.csv');
+        file_name_hd = strcat(selpath,'/',sel_subj,'/',data_type(1),'/',sel_subj, '_task-',sel_task,'_acq-',devices{1},'_emg.csv');
         data_emg_table = readtable(file_name_hd{1});
         Data_emg = table2array(data_emg_table);
         Data_emg = Data_emg*unit_factor; % Conversion mV in V
@@ -97,12 +99,12 @@ for s = 1:length(subj)
     xticklabels([]);
     yticklabels([]);
     grid on
-%     xlabel('Frequency [Hz]')
-%     ylabel('Power Spectral density [V^{2}/Hz]')
-%     legend(h,{'25^{th} percentile','75^{th} percentile','Median'})
-%     title(['HD-sEMG signal spectra on ',subj{s}])
-    status = mkdir(strcat(selpath,'\Figures\emg\'));
-    fig_filename_subj = strcat(selpath,'\Figures\emg\',sel_subj,'_acq-',devices{1},'_spectra_emg');
+    xlabel('Frequency [Hz]')
+    ylabel('Power Spectral density [V^{2}/Hz]')
+    legend(h,{'25^{th} percentile','75^{th} percentile','Median'})
+    title(['HD-sEMG signal spectra on ',subj{s}])
+    status = mkdir(strcat(selpath,'/Figures/emg/'));
+    fig_filename_subj = strcat(selpath,'/Figures/emg/',sel_subj,'_acq-',devices{1},'_spectra_emg');
     saveas(fig,fig_filename_subj{1},'png')
     close all
 end
@@ -126,5 +128,5 @@ xlabel('Frequency [Hz]')
 ylabel('Power Spectral density [V^{2}/Hz]')
 % legend(h,{'25^{th} percentile','75^{th} percentile','Median'})
 % title('High-density signal spectra')
-fig_filename = strcat(selpath,'\Figures\','sub-all_acq-',devices{1},'_spectra_emg');
+fig_filename = strcat(selpath,'/Figures/','sub-all_acq-',devices{1},'_spectra_emg');
 saveas(fig_tot,fig_filename,'png')
