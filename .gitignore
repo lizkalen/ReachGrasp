@@ -7,3 +7,5 @@ results/
 # ignore extra folders
 tools/
 assets/
+.DS_Store
+.gitignore.save
