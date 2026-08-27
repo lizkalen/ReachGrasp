@@ -4,7 +4,7 @@
 
 <p align="center"><img src="https://github.com/DarioDiDomenico/Reach-Grasp/blob/main/assets/movement.gif" alt="" /></p>
 This repository is associated to the dataset Reach&Grasp presented in the publication [Scientific Data](https://rdcu.be/ei71E).
-This code utilizes the cbss algorithm to decode individual MUs.
+This code utilizes the cbss algorithm to decode individual MUs, which can be found in the src folder. The matlab_code folder contains the code necessary to reproduce the figures from the original publication.
 
 
 The original repository is maintained by:
